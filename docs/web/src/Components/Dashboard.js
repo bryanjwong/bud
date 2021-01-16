@@ -7,7 +7,8 @@ import Metric from "./Metric";
 const useStyles = makeStyles({
     root: {
         backgroundColor: "#F5F5FB",
-        padding: "30px 50px",
+        padding: "30px 60px",
+        height: "100vh",
     },
     header: {
         color: "#94B143",
@@ -31,9 +32,10 @@ function Dashboard() {
         <Graph />
         <p className={classes.labels}>Helpful stats</p>
         <Grid container>
-            <Grid item xs={4}><Metric /></Grid>
-            <Grid item xs={4}><Metric /></Grid>
-            <Grid item xs={4}><Metric /></Grid>
+            <Grid item xs={3}><Metric /></Grid>
+            <Grid item xs={3}><Metric /></Grid>
+            <Grid item xs={3}><Metric /></Grid>
+            <Grid item xs={3}><Metric /></Grid>
         </Grid>
     </Grid>
     )

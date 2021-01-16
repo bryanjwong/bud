@@ -2,11 +2,13 @@ import { makeStyles } from "@material-ui/core";
 import React from "react";
 import Grid from "@material-ui/core/Grid";
 import Status from './Status';
+import budLogo from '../bud.png';
 
 const useStyles = makeStyles({
     root: {
         backgroundColor: "#94B143",
-        padding: "30px 50px",
+        padding: "30px 35px",
+        height: "100vh",
     },
     header: {
         color: "white",
@@ -15,9 +17,22 @@ const useStyles = makeStyles({
     },
     labels: {
         color: "white",
-        marginBottom: 20,
+        marginBottom: 10,
         fontSize: 16,
         paddingLeft: 30,
+    },
+    footer: {
+        position: "fixed",
+        left: 0,
+        bottom: 0,
+        width: "100%",
+        color: "white",
+        marginLeft: 25,
+        fontWeight: "bold",
+    },
+    logo: {
+        width: "40px",
+        height: "40px"
     }
 });
 
@@ -34,6 +49,12 @@ function ActivityLog() {
         <Status />
         <Status />
         <Status />
+        <div className={classes.footer}>
+            <Grid container>
+                <img src={budLogo} className={classes.logo}/>
+                <h2 style={{margin: "10px 5px"}}>bud</h2>
+            </Grid>
+        </div>
     </Grid>
     )
 }
