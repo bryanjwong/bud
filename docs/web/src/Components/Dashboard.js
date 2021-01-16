@@ -2,7 +2,9 @@ import { makeStyles } from "@material-ui/core";
 import React from "react";
 import Grid from "@material-ui/core/Grid";
 import Graph from "./Graph";
+import Button from '@material-ui/core/Button';
 import Metric from "./Metric";
+import AddIcon from '@material-ui/icons/Add';
 
 const useStyles = makeStyles({
     root: {
@@ -13,12 +15,26 @@ const useStyles = makeStyles({
     header: {
         color: "#94B143",
         fontSize: 20,
-        margin: "0 0 50px 0",
+        margin: "0 0 35px 0",
     },
     labels: {
         color: "#87753F",
         fontSize: 17,
         fontWeight: "bold"
+    },
+    button: {
+        backgroundColor: "white",
+        color: "#8bc34a",
+        fontSize: 14,
+        padding: "4px 20px",
+        fontFamily: "Poppins",
+        textTransform: "none",
+        borderRadius: 10,
+        float: "right",
+        "&:hover": {
+            backgroundColor: "#8bc34a",
+            color: "white"
+        },
     }
 });
 
@@ -27,7 +43,14 @@ function Dashboard() {
 
     return (
     <Grid className={classes.root}>
-        <h6 className={classes.header}>Dashboard</h6>
+        <Grid container>
+            <Grid item xs={6}>
+                <h6 className={classes.header}>Dashboard</h6>
+            </Grid>
+            <Grid item xs={6}>
+                <Button startIcon={<AddIcon />} className={classes.button}>Track a new plant</Button>
+            </Grid>
+        </Grid>
         <p className={classes.labels}>Your plant's progress</p>
         <Graph />
         <p className={classes.labels}>Helpful stats</p>
