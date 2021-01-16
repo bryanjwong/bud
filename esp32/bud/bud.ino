@@ -34,7 +34,7 @@ BH1750 lightMeter;
 
 /* Network Time Protocol Constants */
 WiFiUDP ntpUDP;
-NTPClient timeClient(ntpUDP, "us.pool.ntp.org", -28800);
+NTPClient timeClient(ntpUDP, "us.pool.ntp.org");
 String formattedDate;
 
 /* Sensor Metrics */
@@ -73,7 +73,6 @@ void setup() {
     dht.begin();
     lightMeter.begin();
     timeClient.begin();
-    delay(1000);
 }
 
 /* Read soil moisture, humidity, temp, and light sensors */
