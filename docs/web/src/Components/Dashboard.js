@@ -31,11 +31,10 @@ function Dashboard() {
         <p className={classes.labels}>Your plant's progress</p>
         <Graph />
         <p className={classes.labels}>Helpful stats</p>
-        <Grid container>
-            <Grid item xs={3}><Metric /></Grid>
-            <Grid item xs={3}><Metric /></Grid>
-            <Grid item xs={3}><Metric /></Grid>
-            <Grid item xs={3}><Metric /></Grid>
+        <Grid container spacing={2}>
+            <Grid item xs={3}><Metric metric="Temperature"/></Grid>
+            <Grid item xs={3}><Metric metric="Humidity"/></Grid>
+            <Grid item xs={3}><Metric metric="Light"/></Grid>
         </Grid>
     </Grid>
     )
