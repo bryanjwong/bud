@@ -17,6 +17,25 @@ function Graph(props) {
     const classes = useStyles();
     const chartRef = React.createRef();
 
+    const dims = {
+        "Soil Moisture": {
+            y_label: "Soil Moisture (%)",
+            data: props.soilMoistureData
+        },
+        "Humidity": {
+            y_label: "Air Humidity (%)",
+            data: props.humidityData
+        },
+        "Temperature": {
+            y_label: "Temperature (°F)",
+            data: props.tempData
+        },
+        "Luminance": {
+            y_label: "Luminance (lx)",
+            data: props.lightData
+        }
+    };
+
     useEffect(() => {
         const myChartRef = chartRef.current.getContext("2d");
         const {width: graphWidth} = myChartRef.canvas;
@@ -30,8 +49,8 @@ function Graph(props) {
                 //Bring in data
                 datasets: [
                     {
-                        label: "Humidity",
-                        data: props.humidityData,
+                        label: props.displayedMetric,
+                        data: dims[props.displayedMetric].data,
                         fill: false,
                         borderColor: gradientLine,
                     }
@@ -45,17 +64,27 @@ function Graph(props) {
                     xAxes: [{
                         type: 'time',
                         time: {
-                            unit: 'hour',
+                            // unit: 'minute',
                             tooltipFormat: "MMM D, h:mm a"
                         },
                         bounds: 'data',
+                        scaleLabel: {
+                            display: true,
+                            labelString: 'Time',
+                            fontColor: '#87753F',
+                        },
                         ticks: { display: true },
                         gridLines: {
                             display: false,
                             drawBorder: true
                         }
                     }],
-                    yAxes: [{     
+                    yAxes: [{    
+                        scaleLabel: {
+                            display: true,
+                            labelString: dims[props.displayedMetric].y_label,
+                            fontColor: '#87753F',
+                        }, 
                         ticks: { 
                             display: true,
                             suggestedMin: 30,
@@ -66,6 +95,9 @@ function Graph(props) {
                             drawBorder: false
                         },
                     }]
+                },
+                tooltips: {
+                    displayColors: false,
                 },
             }
         });
