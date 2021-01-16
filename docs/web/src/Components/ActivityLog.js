@@ -34,7 +34,8 @@ function ActivityLog() {
         <Status />
         <Status />
         <Status />
-    </Grid>)
+    </Grid>
+    )
 }
 
 export default ActivityLog;
