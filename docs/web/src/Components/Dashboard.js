@@ -1,10 +1,11 @@
 import { makeStyles } from "@material-ui/core";
-import React from "react";
+import React, { useEffect } from "react";
 import Grid from "@material-ui/core/Grid";
 import Graph from "./Graph";
 import Button from '@material-ui/core/Button';
 import Metric from "./Metric";
 import AddIcon from '@material-ui/icons/Add';
+import axios from "axios";
 
 const useStyles = makeStyles({
     root: {
@@ -40,6 +41,29 @@ const useStyles = makeStyles({
 
 function Dashboard() {
     const classes = useStyles();
+
+    useEffect(() => {
+        axios
+        .get("https://trefle.io/api/v1/plants?token=R8xZcZH6j9PoyOTqoGc_Pndhdvx6nM1aD7FGHYBQc2M", {
+            method: 'HEAD',
+            headers: {
+                'Access-Control-Allow-Origin': '*',
+                'Content-Type': 'application/json',
+            },
+        })
+        .then((res) => {
+            console.log("hello");
+        });
+    }, []);
+    // useEffect(() => {
+    //     fetch("/api/v1/plants?token=R8xZcZH6j9PoyOTqoGc_Pndhdvx6nM1aD7FGHYBQc2M")
+    //     .then(res => res.json())
+    //     .then(
+    //         (result) => {
+    //             console.log(result)
+    //         }
+    //     )
+    // }, []);
 
     return (
     <Grid className={classes.root}>
