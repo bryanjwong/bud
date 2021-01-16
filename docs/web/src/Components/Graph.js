@@ -1,8 +1,8 @@
 import { makeStyles } from "@material-ui/core";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import Grid from "@material-ui/core/Grid";
+import Button from '@material-ui/core/Button';
 import Chart from "chart.js";
-import {db} from "../Services/Firebase"
 
 //--Chart Style Options--//
 Chart.defaults.global.defaultFontFamily = "Poppins"
@@ -11,11 +11,27 @@ Chart.defaults.global.elements.line.tension = 0.5;
 //--Chart Style Options--//
 
 const useStyles = makeStyles({
+    metricbutton: {
+        backgroundColor: "white",
+        color: "#8bc34a",
+        fontSize: 14,
+        padding: "4px 20px",
+        fontFamily: "Poppins",
+        textTransform: "none",
+        borderRadius: 10,
+        float: "right",
+        "&:hover": {
+            backgroundColor: "#8bc34a",
+            color: "white"
+        },
+    }
 });
 
 function Graph(props) {
     const classes = useStyles();
     const chartRef = React.createRef();
+
+    const [displayedMetric, setDisplayedMetric] = useState("Soil Moisture");
 
     const dims = {
         "Soil Moisture": {
@@ -49,8 +65,8 @@ function Graph(props) {
                 //Bring in data
                 datasets: [
                     {
-                        label: props.displayedMetric,
-                        data: dims[props.displayedMetric].data,
+                        label: displayedMetric,
+                        data: dims[displayedMetric].data,
                         fill: false,
                         borderColor: gradientLine,
                     }
@@ -82,7 +98,7 @@ function Graph(props) {
                     yAxes: [{    
                         scaleLabel: {
                             display: true,
-                            labelString: dims[props.displayedMetric].y_label,
+                            labelString: dims[displayedMetric].y_label,
                             fontColor: '#87753F',
                         }, 
                         ticks: { 
@@ -105,6 +121,21 @@ function Graph(props) {
 
     return (
     <Grid container>
+        <Grid item xs={3}>
+            <p className={classes.labels}>Your plant's progress</p>
+        </Grid>
+        <Grid item xs={2}>
+            <Button className={classes.metricbutton} onClick={() => setDisplayedMetric("Soil Moisture")}>Soil Moisture</Button>
+        </Grid>
+        <Grid item xs={2}>
+            <Button className={classes.metricbutton} onClick={() => setDisplayedMetric("Humidity")}>Humidity</Button>
+        </Grid>
+        <Grid item xs={2}>
+            <Button className={classes.metricbutton} onClick={() => setDisplayedMetric("Temperature")}>Temperature</Button>
+        </Grid>
+        <Grid item xs={2}>
+            <Button className={classes.metricbutton} onClick={() => setDisplayedMetric("Luminance")}>Light</Button>
+        </Grid>
         <Grid item xs={10}>
             <div>
                 <canvas

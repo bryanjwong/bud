@@ -1,5 +1,9 @@
 import { makeStyles } from "@material-ui/core";
+<<<<<<< HEAD
 import React, { useState } from "react";
+=======
+import React from "react";
+>>>>>>> 44b6878ba430b701de5fd04069cea6ab79d31085
 import Grid from "@material-ui/core/Grid";
 import Graph from "./Graph";
 import Button from '@material-ui/core/Button';
@@ -37,28 +41,11 @@ const useStyles = makeStyles({
             color: "white"
         },
     },
-    metric: {
-        backgroundColor: "white",
-        color: "#8bc34a",
-        fontSize: 14,
-        padding: "4px 20px",
-        fontFamily: "Poppins",
-        textTransform: "none",
-        borderRadius: 10,
-        float: "right",
-        "&:hover": {
-            backgroundColor: "#8bc34a",
-            color: "white"
-        },
-    }
 });
 
 function Dashboard(props) {
     const classes = useStyles();
 
-    const [displayedMetric, setDisplayedMetric] = useState("Soil Moisture");
-
-    console.log(props)
     var soilMoistureStr = (props.soilMoistureData.length > 0) ? props.soilMoistureData.slice(-1)[0].y : "?";
     var humidityStr = (props.humidityData.length > 0) ? props.humidityData.slice(-1)[0].y : "?";
     var tempStr = (props.tempData.length > 0) ? props.tempData.slice(-1)[0].y : "?";
@@ -75,27 +62,8 @@ function Dashboard(props) {
                         className={classes.button}>Track a new plant</Button>
             </Grid>
         </Grid>
-        <Grid container>
-            <Grid item xs={3}>
-                <p className={classes.labels}>Your plant's progress</p>
-            </Grid>
-            <Grid item xs={2}>
-                <Button className={classes.metric}>Soil Moisture</Button>
-            </Grid>
-            <Grid item xs={2}>
-                <Button className={classes.metric}>Humidity</Button>
-            </Grid>
-            <Grid item xs={2}>
-                <Button className={classes.metric}>Temperature</Button>
-            </Grid>
-            <Grid item xs={2}>
-                <Button className={classes.metric}>Light</Button>
-            </Grid>
-        </Grid>
         
-        
-        <Graph displayedMetric={displayedMetric} soilMoistureData={props.soilMoistureData} humidityData={props.humidityData} 
-                tempData={props.tempData} lightData={props.lightData}/>
+        <Graph soilMoistureData={props.soilMoistureData} humidityData={props.humidityData} tempData={props.tempData} lightData={props.lightData}/>
         <p className={classes.labels}>Helpful stats</p>
         <Grid container spacing={2}>
             <Grid item xs={3}><Metric metric="Soil Moisture" actual={soilMoistureStr} target={props.tSoilMoisture}/></Grid>
