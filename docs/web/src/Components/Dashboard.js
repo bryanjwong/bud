@@ -1,5 +1,5 @@
 import { makeStyles } from "@material-ui/core";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import Grid from "@material-ui/core/Grid";
 import Graph from "./Graph";
 import Button from '@material-ui/core/Button';
@@ -39,31 +39,44 @@ const useStyles = makeStyles({
     }
 });
 
+const proxyurl = "https://cors-anywhere.herokuapp.com/";
+
 function Dashboard() {
     const classes = useStyles();
+    const [tSoilMoisture, setTSoilMoisture] = useState(40);
+    const [tHumidity, setTHumidity] = useState(40);
+    const [tTemp, setTTemp] = useState(50);
+    const [tLight, setTLight] = useState(10);
+
+    async function createNewPlant(name) {
+        const searchResp = await axios
+            .get(proxyurl + "https://trefle.io/api/v1/species/search?token=R8xZcZH6j9PoyOTqoGc_Pndhdvx6nM1aD7FGHYBQc2M", {
+                params: {
+                    q: name
+                }
+            });
+        if (searchResp.data.data.length == 0) {
+            console.log("No results found.");
+            return;
+        }
+        const plantId = searchResp.data.data[0].id;
+        console.log(plantId);
+    
+        const plantResp = await axios 
+            .get(proxyurl + `https://trefle.io/api/v1/species/${plantId}?token=R8xZcZH6j9PoyOTqoGc_Pndhdvx6nM1aD7FGHYBQc2M`);
+        const plantInfo = plantResp.data.data;
+        const growthInfo = plantInfo.growth;
+        console.log(plantInfo.growth); 
+
+        if (growthInfo.soil_humidity) setTSoilMoisture(growthInfo.soil_humidity);
+        if (growthInfo.atmospheric_humidity) setTHumidity(growthInfo.atmospheric_humidity * 10);
+        if (growthInfo.minimum_temperature) setTTemp(growthInfo.minimum_temperature.deg_f);
+        if (growthInfo.light) setTLight(growthInfo.light * 4);
+    };
 
     useEffect(() => {
-        axios
-        .get("https://trefle.io/api/v1/plants?token=R8xZcZH6j9PoyOTqoGc_Pndhdvx6nM1aD7FGHYBQc2M", {
-            method: 'HEAD',
-            headers: {
-                'Access-Control-Allow-Origin': '*',
-                'Content-Type': 'application/json',
-            },
-        })
-        .then((res) => {
-            console.log("hello");
-        });
+        createNewPlant('Sunflower');
     }, []);
-    // useEffect(() => {
-    //     fetch("/api/v1/plants?token=R8xZcZH6j9PoyOTqoGc_Pndhdvx6nM1aD7FGHYBQc2M")
-    //     .then(res => res.json())
-    //     .then(
-    //         (result) => {
-    //             console.log(result)
-    //         }
-    //     )
-    // }, []);
 
     return (
     <Grid className={classes.root}>
@@ -79,9 +92,10 @@ function Dashboard() {
         <Graph />
         <p className={classes.labels}>Helpful stats</p>
         <Grid container spacing={2}>
-            <Grid item xs={3}><Metric metric="Temperature"/></Grid>
-            <Grid item xs={3}><Metric metric="Humidity"/></Grid>
-            <Grid item xs={3}><Metric metric="Light"/></Grid>
+            <Grid item xs={3}><Metric metric="Soil Moisture" actual={40} target={tSoilMoisture}/></Grid>
+            <Grid item xs={3}><Metric metric="Temperature" actual={40} target={tTemp}/></Grid>
+            <Grid item xs={3}><Metric metric="Humidity" actual={40} target={tHumidity}/></Grid>
+            <Grid item xs={3}><Metric metric="Light" actual={40} target={tLight}/></Grid>
         </Grid>
     </Grid>
     )

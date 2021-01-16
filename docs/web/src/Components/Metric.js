@@ -42,12 +42,12 @@ function Metric(props) {
         <Paper elevation={0} className={classes.root}>
             <Grid container>
                 <Grid item xs={6}>
-                    <p className={classes.actual}>54</p>
+                    <p className={classes.actual}>{props.actual}</p>
                     <p className={classes.actualSublabel}>Actual</p>
                 </Grid>
                 <Grid item xs={6}>
                 {/* <div style={{borderLeft: "1px solid green", height: "50px"}}></div> */}
-                    <p className={classes.target}>35</p>
+                    <p className={classes.target}>{props.target}</p>
                     <p className={classes.targetSublabel}>Target</p>
                 </Grid>
                 <Grid item xs={12}>
