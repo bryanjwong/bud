@@ -19,7 +19,6 @@
 #define UPDATE_PERIOD 600000
 unsigned long last_update = -600000;
 
-
 /* OLED Constants */
 #define SCREEN_WIDTH 128 // OLED display width, in pixels
 #define SCREEN_HEIGHT 64 // OLED display height, in pixels
