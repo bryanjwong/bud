@@ -2,9 +2,11 @@
 #include <Adafruit_SSD1306.h>
 #include <BH1750.h>
 #include <DHT.h>
-#include <WiFi.h> 
-#include <Wire.h>
+#include <NTPClient.h>
 #include <splash.h>
+#include <WiFi.h> 
+#include <WiFiUdp.h>
+#include <Wire.h>
 
 /* WiFi Constants */
 #define WIFI_SSID "neptulon TP"
@@ -23,6 +25,10 @@ Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
 #define DHTTYPE DHT11
 DHT dht(DHTPIN, DHTTYPE);
 BH1750 lightMeter;
+
+/* Network Time Protocol Constants */
+WiFiUDP ntpUDP;
+NTPClient timeClient(ntpUDP, "us.pool.ntp.org", -28800);
 
 /* Sensor Metrics */
 float soil_moisture; // 0-100%
@@ -50,16 +56,15 @@ void setup() {
     Serial.println(WiFi.localIP());
     Serial.println();
 
-    // Initialize OLED Display
     display.begin(SSD1306_SWITCHCAPVCC, OLED_ADDR);
     display.clearDisplay();
     display.setTextSize(1);
     display.setTextColor(WHITE);
     display.display();
 
-    // Initialize Sensors
     dht.begin();
     lightMeter.begin();
+    timeClient.begin();
 }
 
 /* Read soil moisture, humidity, temp, and light sensors */
@@ -84,7 +89,9 @@ void update_display() {
 void loop() {
     sense();
     update_display();
+    timeClient.update();
     delay(1000);
+    Serial.println(timeClient.getFormattedDate());
     Serial.println("Soil Moisture: " + String(soil_moisture) + " %");
     Serial.println("Humidity: " + String(humidity) + " %");
     Serial.println("Temperature: " + String(temp) + "°F");
