@@ -14,7 +14,7 @@
 #define WIFI_PASSWORD ""   
 
 /* Firebase Constants */
-#define FIREBASE_HOST "m"
+#define FIREBASE_HOST ""
 #define FIREBASE_AUTH ""
 unsigned long last_update = -60000;
 
@@ -73,6 +73,7 @@ void setup() {
     dht.begin();
     lightMeter.begin();
     timeClient.begin();
+    delay(1000);
 }
 
 /* Read soil moisture, humidity, temp, and light sensors */
@@ -97,10 +98,8 @@ void update_display() {
 /* Upload Sensor data to Firebase */
 void update_firebase() {
     Serial.println("Attempting to write to Firebase");
-    Firebase.setFloat("/active-plant/data/soil_moisture/"+formattedDate, soil_moisture);
-    Firebase.setFloat("/active-plant/data/humidity/"+formattedDate, humidity);
-    Firebase.setFloat("/active-plant/data/temp/"+formattedDate, temp);
-    Firebase.setFloat("/active-plant/data/light/"+formattedDate, light);
+    String data = String(soil_moisture) + "," + String(humidity) + "," + String(temp) + "," + String(light);
+    Firebase.setString("/active-plant/data/"+formattedDate, data);
     if (Firebase.failed()) {
       Serial.println(Firebase.error());  
       return;
