@@ -79,16 +79,16 @@ function Dashboard(props) {
                 <p className={classes.labels}>Your plant's progress</p>
             </Grid>
             <Grid item xs={2}>
-                <Button className={classes.metric}>Soil Moisture</Button>
+                <Button className={classes.metric} onClick={() => setDisplayedMetric("Soil Moisture")}>Soil Moisture</Button>
             </Grid>
             <Grid item xs={2}>
-                <Button className={classes.metric}>Humidity</Button>
+                <Button className={classes.metric} onClick={() => setDisplayedMetric("Humidity")}>Humidity</Button>
             </Grid>
             <Grid item xs={2}>
-                <Button className={classes.metric}>Temperature</Button>
+                <Button className={classes.metric} onClick={() => setDisplayedMetric("Temperature")}>Temperature</Button>
             </Grid>
             <Grid item xs={2}>
-                <Button className={classes.metric}>Light</Button>
+                <Button className={classes.metric} onClick={() => setDisplayedMetric("Luminance")}>Light</Button>
             </Grid>
         </Grid>
         
