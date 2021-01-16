@@ -2,6 +2,7 @@
 #include <Adafruit_SSD1306.h>
 #include <BH1750.h>
 #include <DHT.h>
+#include <IOXhop_FirebaseESP32.h>
 #include <NTPClient.h>
 #include <splash.h>
 #include <WiFi.h> 
@@ -9,8 +10,13 @@
 #include <Wire.h>
 
 /* WiFi Constants */
-#define WIFI_SSID "neptulon TP"
-#define WIFI_PASSWORD "engjoo123"   
+#define WIFI_SSID ""
+#define WIFI_PASSWORD ""   
+
+/* Firebase Constants */
+#define FIREBASE_HOST "m"
+#define FIREBASE_AUTH ""
+unsigned long last_update = -60000;
 
 /* OLED Constants */
 #define SCREEN_WIDTH 128 // OLED display width, in pixels
@@ -29,6 +35,7 @@ BH1750 lightMeter;
 /* Network Time Protocol Constants */
 WiFiUDP ntpUDP;
 NTPClient timeClient(ntpUDP, "us.pool.ntp.org", -28800);
+String formattedDate;
 
 /* Sensor Metrics */
 float soil_moisture; // 0-100%
@@ -55,6 +62,7 @@ void setup() {
     Serial.print("IP Address is : ");
     Serial.println(WiFi.localIP());
     Serial.println();
+    Firebase.begin(FIREBASE_HOST, FIREBASE_AUTH);
 
     display.begin(SSD1306_SWITCHCAPVCC, OLED_ADDR);
     display.clearDisplay();
@@ -86,14 +94,37 @@ void update_display() {
     display.display();
 }
 
-void loop() {
-    sense();
-    update_display();
-    timeClient.update();
-    delay(1000);
-    Serial.println(timeClient.getFormattedDate());
+/* Upload Sensor data to Firebase */
+void update_firebase() {
+    Serial.println("Attempting to write to Firebase");
+    Firebase.setFloat("/active-plant/data/soil_moisture/"+formattedDate, soil_moisture);
+    Firebase.setFloat("/active-plant/data/humidity/"+formattedDate, humidity);
+    Firebase.setFloat("/active-plant/data/temp/"+formattedDate, temp);
+    Firebase.setFloat("/active-plant/data/light/"+formattedDate, light);
+    if (Firebase.failed()) {
+      Serial.println(Firebase.error());  
+      return;
+    }
+}
+
+/* Print Sensor Data to Serial Monitor */
+void print_data() {
+    Serial.println(formattedDate);
     Serial.println("Soil Moisture: " + String(soil_moisture) + " %");
     Serial.println("Humidity: " + String(humidity) + " %");
     Serial.println("Temperature: " + String(temp) + "°F");
     Serial.println("Illuminance: " + String(light) + " lx\n");
+}
+
+void loop() {
+    sense();
+    update_display();
+    timeClient.update();
+    formattedDate = timeClient.getFormattedDate();
+    if (millis() - last_update >= 60000) { // Update Firebase once a minute
+        update_firebase();
+        last_update = millis();
+    }
+    delay(1000);
+//    print_data();
 }
