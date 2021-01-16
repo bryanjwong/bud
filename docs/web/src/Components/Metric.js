@@ -5,7 +5,7 @@ import Paper from '@material-ui/core/Paper';
 
 const useStyles = makeStyles({
     root: {
-        padding: 15,
+        padding: 10,
         borderRadius: 10,
         textAlign: "center"
     },

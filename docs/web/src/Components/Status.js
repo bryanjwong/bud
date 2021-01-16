@@ -12,6 +12,10 @@ const useStyles = makeStyles({
         marginBottom: 10,
         fontSize: 14,
     },
+    date: {
+        margin: 0,
+        float: "right",
+    }
 });
 
 function Status() {
@@ -24,7 +28,7 @@ function Status() {
                     I am a status
                 </Grid>
                 <Grid item xs={4}>
-                    YYYY-MM-DD
+                    <p className={classes.date}>YYYY-MM-DD</p>
                 </Grid>
             </Grid>
         </Paper>
