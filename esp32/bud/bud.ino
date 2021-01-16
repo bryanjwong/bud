@@ -55,11 +55,6 @@ void setup() {
     display.clearDisplay();
     display.setTextSize(1);
     display.setTextColor(WHITE);
-    display.clearDisplay();
-    display.setCursor(3, 10);
-    display.drawBitmap((128 - splash1_width) / 2, (64 - splash1_height) / 2,
-      splash1_data, splash1_width, splash1_height, 1);
-    display.startscrollright(0x00, 0x0F);
     display.display();
 
     // Initialize Sensors
@@ -75,8 +70,20 @@ void sense() {
   light = lightMeter.readLightLevel();
 }
 
+/* Refresh OLED Display to show sensor metrics */
+void update_display() {
+    display.clearDisplay();
+    display.setCursor(0, 0);
+    display.println("Soil Moisture: " + String(soil_moisture) + " %");
+    display.println("Humidity: " + String(humidity) + " %");
+    display.println("Temperature: " + String(temp) + " F");
+    display.println("Illuminance: " + String(light) + " lx\n");
+    display.display();
+}
+
 void loop() {
     sense();
+    update_display();
     delay(1000);
     Serial.println("Soil Moisture: " + String(soil_moisture) + " %");
     Serial.println("Humidity: " + String(humidity) + " %");
