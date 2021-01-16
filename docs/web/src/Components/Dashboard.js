@@ -6,6 +6,7 @@ import Button from '@material-ui/core/Button';
 import Metric from "./Metric";
 import AddIcon from '@material-ui/icons/Add';
 import axios from "axios";
+import {db} from "../Services/Firebase"
 
 const useStyles = makeStyles({
     root: {
@@ -47,6 +48,10 @@ function Dashboard() {
     const [tHumidity, setTHumidity] = useState(40);
     const [tTemp, setTTemp] = useState(50);
     const [tLight, setTLight] = useState(10);
+    const [soilMoistureData, setSoilMoistureData] = useState([]);
+    const [humidityData, setHumidityData] = useState([]);
+    const [tempData, setTempData] = useState([]);
+    const [lightData, setLightData] = useState([]);
 
     async function createNewPlant(name) {
         const searchResp = await axios
@@ -60,13 +65,11 @@ function Dashboard() {
             return;
         }
         const plantId = searchResp.data.data[0].id;
-        console.log(plantId);
     
         const plantResp = await axios 
             .get(proxyurl + `https://trefle.io/api/v1/species/${plantId}?token=R8xZcZH6j9PoyOTqoGc_Pndhdvx6nM1aD7FGHYBQc2M`);
         const plantInfo = plantResp.data.data;
         const growthInfo = plantInfo.growth;
-        console.log(plantInfo.growth); 
 
         if (growthInfo.soil_humidity) setTSoilMoisture(growthInfo.soil_humidity);
         if (growthInfo.atmospheric_humidity) setTHumidity(growthInfo.atmospheric_humidity * 10);
@@ -74,10 +77,40 @@ function Dashboard() {
         if (growthInfo.light) setTLight(growthInfo.light * 4);
     };
 
+    function loadFirebaseData() {
+        let soilMoisture = [];
+        let humidity = [];
+        let temp = [];
+        let light = [];
+        var query = db.ref("active-plant/data");
+        query.once("value")
+        .then(function(snapshot) {
+            snapshot.forEach(function(childSnapshot) {
+                // key is ISO timestamp
+                var key = childSnapshot.key;
+
+                var data = childSnapshot.val().split(",");
+                soilMoisture.push({t:key, y:parseInt(data[0])});
+                humidity.push({t:key, y:parseInt(data[1])});
+                temp.push({t:key, y:parseInt(data[2])});
+                light.push({t:key, y:parseInt(data[3])});
+            });
+            setSoilMoistureData(soilMoisture);
+            setHumidityData(humidity);
+            setTempData(temp);
+            setLightData(light);
+        });
+    }
+
     useEffect(() => {
         createNewPlant('Sunflower');
+        loadFirebaseData();   
     }, []);
 
+    var soilMoistureStr = (soilMoistureData.length > 0) ? soilMoistureData.slice(-1)[0].y : "?";
+    var humidityStr = (humidityData.length > 0) ? humidityData.slice(-1)[0].y : "?";
+    var tempStr = (tempData.length > 0) ? tempData.slice(-1)[0].y : "?";
+    var lightStr = (lightData.length > 0) ? lightData.slice(-1)[0].y : "?";
     return (
     <Grid className={classes.root}>
         <Grid container>
@@ -89,13 +122,13 @@ function Dashboard() {
             </Grid>
         </Grid>
         <p className={classes.labels}>Your plant's progress</p>
-        <Graph />
+        <Graph soilMoistureData={soilMoistureData} humidityData={humidityData} tempData={tempData} lightData={lightData}/>
         <p className={classes.labels}>Helpful stats</p>
         <Grid container spacing={2}>
-            <Grid item xs={3}><Metric metric="Soil Moisture" actual={40} target={tSoilMoisture}/></Grid>
-            <Grid item xs={3}><Metric metric="Temperature" actual={40} target={tTemp}/></Grid>
-            <Grid item xs={3}><Metric metric="Humidity" actual={40} target={tHumidity}/></Grid>
-            <Grid item xs={3}><Metric metric="Light" actual={40} target={tLight}/></Grid>
+            <Grid item xs={3}><Metric metric="Soil Moisture" actual={soilMoistureStr} target={tSoilMoisture}/></Grid>
+            <Grid item xs={3}><Metric metric="Humidity" actual={humidityStr} target={tHumidity}/></Grid>
+            <Grid item xs={3}><Metric metric="Temperature" actual={tempStr} target={tTemp}/></Grid>
+            <Grid item xs={3}><Metric metric="Light" actual={lightStr} target={tLight}/></Grid>
         </Grid>
     </Grid>
     )
