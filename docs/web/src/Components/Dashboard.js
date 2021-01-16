@@ -1,12 +1,11 @@
 import { makeStyles } from "@material-ui/core";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import Grid from "@material-ui/core/Grid";
 import Graph from "./Graph";
 import Button from '@material-ui/core/Button';
 import Metric from "./Metric";
 import AddIcon from '@material-ui/icons/Add';
-import axios from "axios";
-import {db} from "../Services/Firebase"
+import Dialog from '@material-ui/core/Dialog';
 
 const useStyles = makeStyles({
     root: {
@@ -42,11 +41,20 @@ const useStyles = makeStyles({
 
 function Dashboard(props) {
     const classes = useStyles();
-    console.log(props)
+    const [open, setOpen] = useState(false);
+
+    const handleClickOpen = () => {
+        setOpen(true);
+    };
+    const handleClose = () => {
+        setOpen(false);
+    };
+
     var soilMoistureStr = (props.soilMoistureData.length > 0) ? props.soilMoistureData.slice(-1)[0].y : "?";
     var humidityStr = (props.humidityData.length > 0) ? props.humidityData.slice(-1)[0].y : "?";
     var tempStr = (props.tempData.length > 0) ? props.tempData.slice(-1)[0].y : "?";
     var lightStr = (props.lightData.length > 0) ? props.lightData.slice(-1)[0].y : "?";
+
     return (
     <Grid className={classes.root}>
         <Grid container>
@@ -54,9 +62,12 @@ function Dashboard(props) {
                 <h6 className={classes.header}>Dashboard</h6>
             </Grid>
             <Grid item xs={6}>
-                <Button startIcon={<AddIcon />} className={classes.button}>Track a new plant</Button>
+                <Button startIcon={<AddIcon />}
+                        className={classes.button}
+                        onClick={handleClickOpen}>Track a new plant</Button>
             </Grid>
         </Grid>
+        <Dialog open={open} onClose={handleClose}>Hello</Dialog>
         <p className={classes.labels}>Your plant's progress</p>
         <Graph soilMoistureData={props.soilMoistureData} humidityData={props.humidityData} tempData={props.tempData} lightData={props.lightData}/>
         <p className={classes.labels}>Helpful stats</p>
