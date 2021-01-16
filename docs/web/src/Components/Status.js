@@ -9,7 +9,7 @@ const useStyles = makeStyles({
         padding: "10px 30px",
         borderRadius: 15,
         color: "#9C7E95",
-        marginBottom: 15,
+        marginBottom: 10,
         fontSize: 14,
     },
 });
@@ -21,10 +21,10 @@ function Status() {
         <Paper elevation={5} className={classes.root}>
             <Grid container>
                 <Grid item xs={8}>
-                    Water your plants!
+                    I am a status
                 </Grid>
                 <Grid item xs={4}>
-                    2021-01-15
+                    YYYY-MM-DD
                 </Grid>
             </Grid>
         </Paper>
