@@ -16,7 +16,9 @@
 /* Firebase Constants */
 #define FIREBASE_HOST ""
 #define FIREBASE_AUTH ""
-unsigned long last_update = -60000;
+#define UPDATE_PERIOD 600000
+unsigned long last_update = -600000;
+
 
 /* OLED Constants */
 #define SCREEN_WIDTH 128 // OLED display width, in pixels
@@ -119,7 +121,7 @@ void loop() {
     update_display();
     timeClient.update();
     formattedDate = timeClient.getFormattedDate();
-    if (millis() - last_update >= 60000) { // Update Firebase once a minute
+    if (millis() - last_update >= UPDATE_PERIOD) {
         update_firebase();
         last_update = millis();
     }
