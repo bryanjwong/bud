@@ -1,8 +1,8 @@
 import firebase from 'firebase';
 
 var firebaseConfig = {
-    apiKey: "AIzaSyC-WhzpjEb2PwWmn-yZWaizB7rFZD6yyAE",
-    authDomain: "bud-project-d6a10.firebaseapp.com",
+    apiKey: "",
+    authDomain: "",
     databaseURL: "https://bud-project-d6a10-default-rtdb.firebaseio.com",
     projectId: "bud-project-d6a10",
     storageBucket: "bud-project-d6a10.appspot.com",
