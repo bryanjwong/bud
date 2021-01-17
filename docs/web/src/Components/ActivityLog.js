@@ -20,6 +20,7 @@ const useStyles = makeStyles({
         marginBottom: 10,
         fontSize: 16,
         paddingLeft: 30,
+        paddingRight: 30,
     },
     footer: {
         position: "fixed",
@@ -47,22 +48,54 @@ function ActivityLog(props) {
     const tempData = props.tempData;
     const lightData = props.lightData;
 
-    var soilMoistureStr = (props.soilMoistureData.length > 0) ? props.soilMoistureData.slice(-1)[0].y : "?";
-    var humidityStr = (props.humidityData.length > 0) ? props.humidityData.slice(-1)[0].y : "?";
-    var tempStr = (props.tempData.length > 0) ? props.tempData.slice(-1)[0].y : "?";
-    var lightStr = (props.lightData.length > 0) ? props.lightData.slice(-1)[0].y : "?";
+    function getDateString() {
+        var today = new Date();
+        var dd = String(today.getDate()).padStart(2, '0');
+        var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+        var yyyy = today.getFullYear();
+        return (dd + "/" + mm + "/" + yyyy);
+    }
 
     return (
     <Grid className={classes.root}>
-        <h6 className={classes.header}>Activity Log</h6>
+        <h6 className={classes.header}>Activity Log for {getDateString()}</h6>
         <Grid container>
-            <Grid item xs={8} className={classes.labels}>Status</Grid>
-            <Grid item xs={4} className={classes.labels}>Time</Grid>
+            <Grid item xs={8} className={classes.labels}>
+                Status
+            </Grid>
+            <Grid item xs={4} className={classes.labels}>
+                <p style={{ margin: 0, float: "right" }}>Time</p>
+            </Grid>
         </Grid>
-        {(soilMoistureData.length > 0) && <Status />}
-        {(humidityData.length > 0) && <Status />}
-        {(tempData.length > 0) && <Status />}
-        {(lightData.length > 0) && <Status />}
+
+        {/* SOIL MOISTURE STATUS */}
+        {(soilMoistureData.length > 0) && 
+         (soilMoistureData.slice(-1)[0].y < tSoilMoisture) && 
+         <Status message="Moisture is low: Water your plant!"
+                 time={soilMoistureData.slice(-1)[0].t}
+         />}
+
+        {/* HUMIDITY STATUS */}
+        {(humidityData.length > 0) && 
+         (humidityData.slice(-1)[0].y < tHumidity) &&
+         <Status message="It's not humid enough!"
+                 time={humidityData.slice(-1)[0].t}
+         />}
+
+        {/* TEMPERATURE STATUS */}
+        {(tempData.length > 0) && 
+         (tempData.slice(-1)[0].y < tTemp) &&
+         <Status message="Temperature is getting colder!"
+                 time={tempData.slice(-1)[0].t}
+         />}
+
+        {/* LIGHT STATUS */}
+        {(lightData.length > 0) && 
+         (lightData.slice(-1)[0].y < tLight) &&
+         <Status message="Your plant needs more light!"
+                 time={humidityData.slice(-1)[0].t}
+         />}
+
         <div className={classes.footer}>
             <Grid container>
                 <img src={budLogo} className={classes.logo}/>
