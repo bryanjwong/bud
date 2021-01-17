@@ -1,4 +1,6 @@
 # bud
+![](https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/001/355/753/datas/gallery.jpg)
+
 #### Kathy Daniels and Bryan Wong
 ### [Dashboard](https://bryanjwong.github.io/bud/) | [Demo Video](https://youtu.be/a44sxq7Y4WQ) | [GitHub Repo](https://github.com/bryanjwong/bud) | [Slide Deck](https://docs.google.com/presentation/d/1ApXYLpTveTEwwH3yQijMfoTFlVSydzYXCT7clnN1dxA/edit?usp=sharing)
 
@@ -11,6 +13,8 @@ bud is an IoT gardening assistant that makes tending house plants a breeze for e
 The [bud website](https://bryanjwong.github.io/bud/) allows users to visualize the emitted sensor data  using a beautiful React frontend. These metrics are displayed in an elegant ChartJs Line Graph and a plant dashboard. In the case of an issue, the activity log will display various alerts with information on how to correct the problem. Users can also use the bud website to configure the system for their specific plant. bud uses the Trefle plant API to search for optimal growth conditions for the user's choice of plant, uploading the results to the synced Firebase database.
 
 ## ESP32 (esp32/)
+![](https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/001/347/288/datas/gallery.jpg)
+
 `bud.ino` runs on the ESP32 and is responsible for managing all of the buddy's sensors and hardware components. The ESP32 uses the I2C protocol to read and write from/to the Light Sensor and OLED display. It reads and writes metrics to our Google Firebase database and uses the NTPClient library to write accurate timestamped data. 
 
 Parts:
@@ -30,6 +34,8 @@ Libraries:
 * [NTPClient](https://github.com/taranais/NTPClient)
 
 ## React Frontend (docs/)
+![](https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/001/347/241/datas/gallery.jpg)
+
 The frontend for our website is responsible for performing various calls to the [Trefle API](https://docs.trefle.io/) and the Google Firebase API. Due to CORS issues with the Trefle API, we routed those API calls through [cors-anywhere](https://github.com/Rob--W/cors-anywhere). We display our metrics and other info using React.js with various material-ui components. We use Chart.js to build our metrics Line graph. The website is hosted on Github Pages.
 
 Libraries:
