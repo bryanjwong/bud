@@ -16,10 +16,11 @@ const useStyles = makeStyles({
         color: "#8bc34a",
         fontSize: 14,
         padding: "4px 20px",
+        marginRight: "10px",
         fontFamily: "Poppins",
         textTransform: "none",
         borderRadius: 10,
-        float: "right",
+        // float: "left",
         "&:hover": {
             backgroundColor: "#8bc34a",
             color: "white"
@@ -54,9 +55,9 @@ function Graph(props) {
 
     useEffect(() => {
         const myChartRef = chartRef.current.getContext("2d");
-        const {width: graphWidth} = myChartRef.canvas;
-        let gradientLine = myChartRef.createLinearGradient(0, 0, graphWidth * 2, 0);
-        gradientLine.addColorStop(0, "#60BCB9");
+        const {height: graphHeight} = myChartRef.canvas;
+        let gradientLine = myChartRef.createLinearGradient(0, 0, 0, graphHeight);
+        gradientLine.addColorStop(0, "rgb(96, 188, 177, 0.2)");
         gradientLine.addColorStop(1, "#7ACEFA");
 
         new Chart(myChartRef, {
@@ -67,8 +68,8 @@ function Graph(props) {
                     {
                         label: displayedMetric,
                         data: dims[displayedMetric].data,
-                        fill: false,
                         borderColor: gradientLine,
+                        backgroundColor: gradientLine,
                     }
                 ]
             },
@@ -80,7 +81,6 @@ function Graph(props) {
                     xAxes: [{
                         type: 'time',
                         time: {
-                            // unit: 'minute',
                             tooltipFormat: "MMM D, h:mm a"
                         },
                         bounds: 'data',
@@ -88,23 +88,30 @@ function Graph(props) {
                             display: true,
                             labelString: 'Time',
                             fontColor: '#87753F',
+                            fontSize: 16,
                         },
-                        ticks: { display: true },
+                        ticks: { 
+                            display: true,
+                            maxTicksLimit: 10,
+                            maxRotation: 0,
+                        },
                         gridLines: {
                             display: false,
                             drawBorder: true
                         }
                     }],
                     yAxes: [{    
+                        offset: true,
                         scaleLabel: {
                             display: true,
                             labelString: dims[displayedMetric].y_label,
                             fontColor: '#87753F',
+                            fontSize: 16,
                         }, 
                         ticks: { 
                             display: true,
-                            suggestedMin: 30,
-                            suggestedMax: 80, 
+                            // suggestedMin: 30,
+                            // suggestedMax: 80, 
                         },
                         gridLines: {
                             display: true,
@@ -119,22 +126,21 @@ function Graph(props) {
         });
     });
 
+    var soilMoistureStyle = (displayedMetric === "Soil Moisture") ? {backgroundColor:" #8bc34a", color: "white"} : {};
+    var humidityStyle = (displayedMetric === "Humidity") ? {backgroundColor:" #8bc34a", color: "white"} : {};
+    var tempStyle = (displayedMetric === "Temperature") ? {backgroundColor:" #8bc34a", color: "white"} : {};
+    var lightStyle = (displayedMetric === "Light") ? {backgroundColor:" #8bc34a", color: "white"} : {};
+
     return (
     <Grid container>
-        <Grid item xs={3}>
+        {/* <Grid item xs={3}>
             <p className={classes.labels}>Your plant's progress</p>
-        </Grid>
-        <Grid item xs={2}>
-            <Button className={classes.metricbutton} onClick={() => setDisplayedMetric("Soil Moisture")}>Soil Moisture</Button>
-        </Grid>
-        <Grid item xs={2}>
-            <Button className={classes.metricbutton} onClick={() => setDisplayedMetric("Humidity")}>Humidity</Button>
-        </Grid>
-        <Grid item xs={2}>
-            <Button className={classes.metricbutton} onClick={() => setDisplayedMetric("Temperature")}>Temperature</Button>
-        </Grid>
-        <Grid item xs={2}>
-            <Button className={classes.metricbutton} onClick={() => setDisplayedMetric("Luminance")}>Light</Button>
+        </Grid> */}
+        <Grid item xs={10}>
+            <Button id="b1" className={classes.metricbutton} style={soilMoistureStyle} onClick={() => setDisplayedMetric("Soil Moisture")}>Soil Moisture</Button>
+            <Button id="b2" className={classes.metricbutton} style={humidityStyle} onClick={() => setDisplayedMetric("Humidity")}>Humidity</Button>
+            <Button id="b3" className={classes.metricbutton} style={tempStyle} onClick={() => setDisplayedMetric("Temperature")}>Temperature</Button> 
+            <Button id="b4" className={classes.metricbutton} style={lightStyle} onClick={() => setDisplayedMetric("Luminance")}>Light</Button>
         </Grid>
         <Grid item xs={10}>
             <div>
