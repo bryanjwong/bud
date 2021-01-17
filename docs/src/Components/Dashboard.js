@@ -142,10 +142,10 @@ function Dashboard(props) {
         {/* STATS */}
         <p className={classes.labels}>Helpful stats</p>
         <Grid container spacing={2}>
-            <Grid item xs={3}><Metric metric="Soil Moisture" actual={soilMoistureStr} target={props.tSoilMoisture} color={"rgb(122, 206, 250, 1.0)"}/></Grid>
-            <Grid item xs={3}><Metric metric="Humidity" actual={humidityStr} target={props.tHumidity} color={"rgb(97, 144, 232, 1.0)"}/></Grid>
-            <Grid item xs={3}><Metric metric="Temperature" actual={tempStr} target={props.tTemp} color={"rgb(255, 175, 189, 1.0)"}/></Grid>
-            <Grid item xs={3}><Metric metric="Light" actual={lightStr} target={props.tLight} color={"rgb(247, 151, 30, 1.0)"}/></Grid>
+            <Grid item xs={3}><Metric metric="Soil Moisture" actual={soilMoistureStr} target={String(props.tSoilMoisture)+"%"} color={"rgb(122, 206, 250, 1.0)"}/></Grid>
+            <Grid item xs={3}><Metric metric="Humidity" actual={humidityStr} target={String(props.tHumidity)+"%"} color={"rgb(97, 144, 232, 1.0)"}/></Grid>
+            <Grid item xs={3}><Metric metric="Temperature" actual={tempStr} target={String(props.tTemp)+"°F"} color={"rgb(255, 175, 189, 1.0)"}/></Grid>
+            <Grid item xs={3}><Metric metric="Light" actual={lightStr} target={String(props.tLight)+"lx"} color={"rgb(247, 151, 30, 1.0)"}/></Grid>
         </Grid>
 
         {/* MODAL */}
