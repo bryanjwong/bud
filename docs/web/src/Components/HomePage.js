@@ -23,8 +23,9 @@ function HomePage() {
     const [humidityData, setHumidityData] = useState([]);
     const [tempData, setTempData] = useState([]);
     const [lightData, setLightData] = useState([]);
+    const [species, setSpecies] = useState("sunflower");
 
-    async function createNewPlant(name) {
+    async function searchPlant(name) {
         const searchResp = await axios
             .get(proxyurl + "https://trefle.io/api/v1/species/search?token=R8xZcZH6j9PoyOTqoGc_Pndhdvx6nM1aD7FGHYBQc2M", {
                 params: {
@@ -39,15 +40,21 @@ function HomePage() {
     
         const plantResp = await axios 
             .get(proxyurl + `https://trefle.io/api/v1/species/${plantId}?token=R8xZcZH6j9PoyOTqoGc_Pndhdvx6nM1aD7FGHYBQc2M`);
+        return plantResp;
+    };
+
+    async function createNewPlant(name) {
+        const plantResp = await searchPlant(name)
         const plantInfo = plantResp.data.data;
         const growthInfo = plantInfo.growth;
-
+        
+        if (plantInfo.common_name) setSpecies(plantInfo.common_name);
         if (growthInfo.soil_humidity) setTSoilMoisture(growthInfo.soil_humidity);
         if (growthInfo.atmospheric_humidity) setTHumidity(growthInfo.atmospheric_humidity * 10);
         if (growthInfo.minimum_temperature) setTTemp(growthInfo.minimum_temperature.deg_f);
         if (growthInfo.light) setTLight(growthInfo.light * 4);
 
-        updateTargets(tSoilMoisture, tHumidity, tTemp, tLight);
+        updateTargets(plantInfo.common_name, plantInfo.scientific_name, tSoilMoisture, tHumidity, tTemp, tLight);
     };
 
     function loadFirebaseData() {
@@ -91,23 +98,30 @@ function HomePage() {
                     case "light":
                         setTLight(childSnapshot.val());
                         break;
+                    case "species":
+                        setSpecies(childSnapshot.val());
+                        break;
                 }
             })
         });
     }
 
-    function updateTargets(soilMoistureTarget, humidityTarget, tempTarget, lightTarget) {
+    function updateTargets(species, scientific_name, soilMoistureTarget, humidityTarget, tempTarget, lightTarget) {
         console.log("Updating Targets in Firebase")
+        const today = new Date();
         db.ref("active-plant/target").set({
             soil_moisture: soilMoistureTarget,
             humidity: humidityTarget,
             temp: tempTarget,
-            light: lightTarget
-        });
+            light: lightTarget,
+            species: species,
+            scientific_name: scientific_name,
+            date_planted: today.toISOString()
+        }); 
     }
 
     useEffect(() => {
-        createNewPlant('Sunflower');
+        // createNewPlant('Sunflower');
         loadFirebaseData();   
     }, []);
 
@@ -117,8 +131,9 @@ function HomePage() {
                 <ActivityLog />
             </Grid>
             <Grid item xs={12} lg={8}>
-                <Dashboard tSoilMoisture={tSoilMoisture} tHumidity={tHumidity} tTemp={tTemp} tLight={tLight}
-                           soilMoistureData={soilMoistureData} humidityData={humidityData} tempData={tempData} lightData={lightData}/>
+                <Dashboard species={species} tSoilMoisture={tSoilMoisture} tHumidity={tHumidity} tTemp={tTemp} tLight={tLight}
+                           soilMoistureData={soilMoistureData} humidityData={humidityData} tempData={tempData} lightData={lightData}
+                           searchPlant={searchPlant} createNewPlant={createNewPlant}/>
             </Grid>
         </Grid>
     )

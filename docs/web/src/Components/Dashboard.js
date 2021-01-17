@@ -59,13 +59,30 @@ const useStyles = makeStyles({
     modalConditions: {
         color: "#87753F",
         margin: 0
+    },
+    plantButton: {
+        backgroundColor: "#8bc34a",
+        color: "white",
+        fontSize: 18,
+        padding: "4px 20px",
+        fontFamily: "Poppins",
+        textTransform: "none",
+        borderRadius: 10,
+        float: "right",
     }
 });
 
 function Dashboard(props) {
     const classes = useStyles();
     const [open, setOpen] = useState(false);
-    const [species, setSpecies] = useState("sunflower");
+    const [idealSoilMoisture, setIdealSoilMoisture] = useState(40)
+    const [idealHumidity, setIdealHumidity] = useState(40);
+    const [idealTemp, setIdealTemp] = useState(50);
+    const [idealLight, setIdealLight] = useState(10);
+    const [precipitation, setPrecipitation] = useState("N/A");
+    const [minRootDepth, setMinRootDepth] = useState("N/A");
+    const [phRange, setPhRange] = useState("N/A");
+    const [nutriments, setNutriments] = useState("N/A");
 
     var soilMoistureStr = (props.soilMoistureData.length > 0) ? props.soilMoistureData.slice(-1)[0].y : "?";
     var humidityStr = (props.humidityData.length > 0) ? props.humidityData.slice(-1)[0].y : "?";
@@ -78,6 +95,25 @@ function Dashboard(props) {
     
     const handleClose = () => {
         setOpen(false);
+    };
+
+    async function handleChange(e) {
+        console.log(e.target.value);
+        const plantResp = await props.searchPlant(e.target.value);
+        const growthInfo = plantResp.data.data.growth;
+        console.log(growthInfo);
+        if (growthInfo.soil_humidity) setIdealSoilMoisture(growthInfo.soil_humidity);
+        if (growthInfo.atmospheric_humidity) setIdealHumidity(growthInfo.atmospheric_humidity * 10);
+        if (growthInfo.minimum_temperature) setIdealTemp(growthInfo.minimum_temperature.deg_f);
+        if (growthInfo.light) setIdealLight(growthInfo.light * 4);
+        if (growthInfo.minimum_precipitation) setPrecipitation(growthInfo.minimum_precipitation.mm+"mm/yr");
+        if (growthInfo.minimum_root_depth) setMinRootDepth(growthInfo.minimum_root_depth.cm);
+        if (growthInfo.ph_minimum && growthInfo.ph_maximum) setPhRange(growthInfo.ph_minimum+" - "+growthInfo.ph_maximum)
+        if (growthInfo.soil_nutriments) setNutriments(growthInfo.soil_nutriments);
+    }
+
+    const handleClickPlant = () => {
+
     };
 
     return (
@@ -95,7 +131,7 @@ function Dashboard(props) {
         </Grid>
 
         {/* CHART */}
-        <p className={classes.labels}>Your {species}'s progress</p>
+        <p className={classes.labels}>Your {props.species.toLowerCase()}'s progress</p>
         <Graph soilMoistureData={props.soilMoistureData} humidityData={props.humidityData} tempData={props.tempData} lightData={props.lightData}/>
         
         {/* STATS */}
@@ -119,27 +155,36 @@ function Dashboard(props) {
                                 <h3 style={{ color: "#233F30", margin: "10px 0 0 0" }}>What species are you tracking?</h3>
                                 <FormControl style={{minWidth: 150, marginTop: 2}}>
                                     <Select
+                                        onChange={handleChange}
                                         displayEmpty
                                         inputProps={{ 'aria-label': 'Without label' }}
                                     >
                                     <MenuItem value="">
                                         <em>None</em>
                                     </MenuItem>
-                                    <MenuItem value="Plant 1">Plant 1</MenuItem>
-                                    <MenuItem value="Plant 2">Plant 2</MenuItem>
-                                    <MenuItem value="Plant 3">Plant 3</MenuItem>
+                                    <MenuItem value="Sunflower">Sunflower</MenuItem>
+                                    <MenuItem value="Daisy">Daisy</MenuItem>
+                                    <MenuItem value="Garden Tomato">Garden Tomato</MenuItem>
                                     </Select>
                                 </FormControl>
                                 <p className={classes.modalConditionHeader}>Find out its ideal conditions</p>
-                                <p className={classes.modalConditions}>Soil moisture</p>
-                                <p className={classes.modalConditions}>Humidity</p>
-                                <p className={classes.modalConditions}>Temperature</p>
-                                <p className={classes.modalConditions}>Light</p>
+                                <p className={classes.modalConditions}>Soil Moisture: {idealSoilMoisture}%</p>
+                                <p className={classes.modalConditions}>Humidity: {idealHumidity}%</p>
+                                <p className={classes.modalConditions}>Min Temperature: {idealTemp}°F</p>
+                                <p className={classes.modalConditions}>Light: {idealLight} lx</p>
+                                <p className={classes.modalConditions}>Precipitation: {precipitation}</p>
+                                <p className={classes.modalConditionHeader}>Planting Tips:</p>
+                                <p className={classes.modalConditions}>Min Root Depth: {minRootDepth} cm</p>
+                                <p className={classes.modalConditions}>Soil pH: {phRange}</p>
+                                <p className={classes.modalConditions}>Soil Nutriments: {nutriments}</p>
                             </Grid>
                             <Grid item xs={4}>
                                 <img src={plant} className={classes.image}/>
                             </Grid>
                         </Grid>
+                        <Button startIcon={<AddIcon />}
+                                    className={classes.plantButton}
+                                    onClick={handleClickPlant}>Plant it!</Button>
                     </DialogContent>
         </Dialog>
     </Grid>
