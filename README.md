@@ -1,4 +1,4 @@
-# bud
+# bud - IDEA Hacks 2021 AudioVisual Category Grand Prize Winner
 ![](https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/001/355/753/datas/gallery.jpg)
 
 #### Kathy Daniels and Bryan Wong
@@ -8,6 +8,8 @@
 Amidst the new era of quarantine, millions throughout the world have turned to new hobbies to keep themselves occupied. Among the most popular of these quarantine hobbies is gardening, a favorite among many college students. More than ever, house plants are seeing a huge surge of popularity. It isn't that easy, however— whether it's through underwatering, overwatering, poor soil conditions, or inadequate lighting, many rookie gardeners have killed their beloved plants. But fear not, green thumbed friends... bud is here to help out!
 
 ## About bud
+![](https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/001/347/287/datas/gallery.jpg)
+
 bud is an IoT gardening assistant that makes tending house plants a breeze for everyone. Your plant's "buddy" device uses a variety of sensors to monitor its soil moisture, air humidity, temperature, and light intensity conditions. The buddy leverages the ESP32's WiFi capabilities to periodically read and write sensor data to a Google Firebase database. In addition, users can use the [bud website](https://bryanjwong.github.io/bud/) to load a unique profile for their plant, which contain target values for each metric. If these target values are not met (e.g. the soil is too dry), the buddy will light up an LED and play a sound alert, allowing the user to correct the issue. The buddy also uses an OLED display to show these metrics and other information.
 
 The [bud website](https://bryanjwong.github.io/bud/) allows users to visualize the emitted sensor data  using a beautiful React frontend. These metrics are displayed in an elegant ChartJs Line Graph and a plant dashboard. In the case of an issue, the activity log will display various alerts with information on how to correct the problem. Users can also use the bud website to configure the system for their specific plant. bud uses the Trefle plant API to search for optimal growth conditions for the user's choice of plant, uploading the results to the synced Firebase database.
