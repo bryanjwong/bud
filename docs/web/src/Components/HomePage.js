@@ -46,6 +46,8 @@ function HomePage() {
         if (growthInfo.atmospheric_humidity) setTHumidity(growthInfo.atmospheric_humidity * 10);
         if (growthInfo.minimum_temperature) setTTemp(growthInfo.minimum_temperature.deg_f);
         if (growthInfo.light) setTLight(growthInfo.light * 4);
+
+        updateTargets(tSoilMoisture, tHumidity, tTemp, tLight);
     };
 
     function loadFirebaseData() {
@@ -70,6 +72,37 @@ function HomePage() {
             setHumidityData(humidity);
             setTempData(temp);
             setLightData(light);
+        });
+
+        query = db.ref("active-plant/target");
+        query.once("value")
+        .then(function(snapshot) {
+            snapshot.forEach(function(childSnapshot) {
+                switch(childSnapshot.key) {
+                    case "soil_moisture": 
+                        setTSoilMoisture(childSnapshot.val());
+                        break;
+                    case "humidity":
+                        setTHumidity(childSnapshot.val());
+                        break;
+                    case "temp":
+                        setTTemp(childSnapshot.val());
+                        break;
+                    case "light":
+                        setTLight(childSnapshot.val());
+                        break;
+                }
+            })
+        });
+    }
+
+    function updateTargets(soilMoistureTarget, humidityTarget, tempTarget, lightTarget) {
+        console.log("Updating Targets in Firebase")
+        db.ref("active-plant/target").set({
+            soil_moisture: soilMoistureTarget,
+            humidity: humidityTarget,
+            temp: tempTarget,
+            light: lightTarget
         });
     }
 

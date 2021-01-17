@@ -129,6 +129,9 @@ function Graph(props) {
                 },
                 tooltips: {
                     displayColors: false,
+                    backgroundColor: "white",
+                    titleFontColor: "#8bc34a",
+                    bodyFontColor: dims[displayedMetric].highGradient,
                 },
             }
         });
@@ -141,9 +144,6 @@ function Graph(props) {
 
     return (
     <Grid container>
-        {/* <Grid item xs={3}>
-            <p className={classes.labels}>Your plant's progress</p>
-        </Grid> */}
         <Grid item xs={10}>
             <Button id="b1" className={classes.metricbutton} style={soilMoistureStyle} onClick={() => setDisplayedMetric("Soil Moisture")}>Soil Moisture</Button>
             <Button id="b2" className={classes.metricbutton} style={humidityStyle} onClick={() => setDisplayedMetric("Humidity")}>Humidity</Button>

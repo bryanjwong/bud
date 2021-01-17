@@ -42,8 +42,8 @@ function Metric(props) {
         <Paper elevation={0} className={classes.root}>
             <Grid container>
                 <Grid item xs={6}>
-                    <p className={classes.actual}>{props.actual}</p>
-                    <p className={classes.actualSublabel}>Actual</p>
+                    <p className={classes.actual} style={{color:props.color}}>{props.actual}</p>
+                    <p className={classes.actualSublabel} style={{color:props.color}}>Actual</p>
                 </Grid>
                 <Grid item xs={6}>
                 {/* <div style={{borderLeft: "1px solid green", height: "50px"}}></div> */}
