@@ -73,6 +73,7 @@ function ActivityLog(props) {
          (soilMoistureData.slice(-1)[0].y < tSoilMoisture) && 
          <Status message="Moisture is low: Water your plant!"
                  time={soilMoistureData.slice(-1)[0].t}
+                 type="moisture"
          />}
 
         {/* HUMIDITY STATUS */}
@@ -80,6 +81,7 @@ function ActivityLog(props) {
          (humidityData.slice(-1)[0].y < tHumidity) &&
          <Status message="It's not humid enough!"
                  time={humidityData.slice(-1)[0].t}
+                 type="humidity"
          />}
 
         {/* TEMPERATURE STATUS */}
@@ -87,6 +89,7 @@ function ActivityLog(props) {
          (tempData.slice(-1)[0].y < tTemp) &&
          <Status message="Temperature is getting colder!"
                  time={tempData.slice(-1)[0].t}
+                 type="temp"
          />}
 
         {/* LIGHT STATUS */}
@@ -94,6 +97,7 @@ function ActivityLog(props) {
          (lightData.slice(-1)[0].y < tLight) &&
          <Status message="Your plant needs more light!"
                  time={humidityData.slice(-1)[0].t}
+                 type="light"
          />}
 
         <div className={classes.footer}>
