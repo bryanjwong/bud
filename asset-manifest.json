@@ -1,0 +1,24 @@
+{
+  "files": {
+    "main.css": "/bud/static/css/main.37e014b8.chunk.css",
+    "main.js": "/bud/static/js/main.71997f06.chunk.js",
+    "main.js.map": "/bud/static/js/main.71997f06.chunk.js.map",
+    "runtime-main.js": "/bud/static/js/runtime-main.3abdf646.js",
+    "runtime-main.js.map": "/bud/static/js/runtime-main.3abdf646.js.map",
+    "static/js/2.144557be.chunk.js": "/bud/static/js/2.144557be.chunk.js",
+    "static/js/2.144557be.chunk.js.map": "/bud/static/js/2.144557be.chunk.js.map",
+    "static/js/3.e5691501.chunk.js": "/bud/static/js/3.e5691501.chunk.js",
+    "static/js/3.e5691501.chunk.js.map": "/bud/static/js/3.e5691501.chunk.js.map",
+    "index.html": "/bud/index.html",
+    "static/css/main.37e014b8.chunk.css.map": "/bud/static/css/main.37e014b8.chunk.css.map",
+    "static/js/2.144557be.chunk.js.LICENSE.txt": "/bud/static/js/2.144557be.chunk.js.LICENSE.txt",
+    "static/media/bud.c3563bee.png": "/bud/static/media/bud.c3563bee.png",
+    "static/media/newplant.01800a77.png": "/bud/static/media/newplant.01800a77.png"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.3abdf646.js",
+    "static/js/2.144557be.chunk.js",
+    "static/css/main.37e014b8.chunk.css",
+    "static/js/main.71997f06.chunk.js"
+  ]
+}
