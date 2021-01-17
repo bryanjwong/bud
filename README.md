@@ -2,7 +2,7 @@
 ![](https://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/001/355/753/datas/gallery.jpg)
 
 #### Kathy Daniels and Bryan Wong
-### [Dashboard](https://bryanjwong.github.io/bud/) | [Demo Video](https://youtu.be/a44sxq7Y4WQ) | [GitHub Repo](https://github.com/bryanjwong/bud) | [Slide Deck](https://docs.google.com/presentation/d/1ApXYLpTveTEwwH3yQijMfoTFlVSydzYXCT7clnN1dxA/edit?usp=sharing)
+### [Dashboard](https://bryanjwong.github.io/bud/) | [Demo Video](https://youtu.be/a44sxq7Y4WQ) | [DevPost](https://devpost.com/software/bud-pq9jdr) | [Slide Deck](https://docs.google.com/presentation/d/1ApXYLpTveTEwwH3yQijMfoTFlVSydzYXCT7clnN1dxA/edit?usp=sharing)
 
 ## Introduction
 Amidst the new era of quarantine, millions throughout the world have turned to new hobbies to keep themselves occupied. Among the most popular of these quarantine hobbies is gardening, a favorite among many college students. More than ever, house plants are seeing a huge surge of popularity. It isn't that easy, however— whether it's through underwatering, overwatering, poor soil conditions, or inadequate lighting, many rookie gardeners have killed their beloved plants. But fear not, green thumbed friends... bud is here to help out!
