@@ -36,8 +36,21 @@ const useStyles = makeStyles({
     }
 });
 
-function ActivityLog() {
+function ActivityLog(props) {
     const classes = useStyles();
+    const tSoilMoisture = props.tSoilMoisture;
+    const tHumidity = props.tHumidity;
+    const tTemp = props.tTemp;
+    const tLight = props.tLight;
+    const soilMoistureData = props.soilMoistureData;
+    const humidityData = props.humidityData;
+    const tempData = props.tempData;
+    const lightData = props.lightData;
+
+    var soilMoistureStr = (props.soilMoistureData.length > 0) ? props.soilMoistureData.slice(-1)[0].y : "?";
+    var humidityStr = (props.humidityData.length > 0) ? props.humidityData.slice(-1)[0].y : "?";
+    var tempStr = (props.tempData.length > 0) ? props.tempData.slice(-1)[0].y : "?";
+    var lightStr = (props.lightData.length > 0) ? props.lightData.slice(-1)[0].y : "?";
 
     return (
     <Grid className={classes.root}>
@@ -46,9 +59,10 @@ function ActivityLog() {
             <Grid item xs={8} className={classes.labels}>Status</Grid>
             <Grid item xs={4} className={classes.labels}>Time</Grid>
         </Grid>
-        <Status />
-        <Status />
-        <Status />
+        {(soilMoistureData.length > 0) && <Status />}
+        {(humidityData.length > 0) && <Status />}
+        {(tempData.length > 0) && <Status />}
+        {(lightData.length > 0) && <Status />}
         <div className={classes.footer}>
             <Grid container>
                 <img src={budLogo} className={classes.logo}/>

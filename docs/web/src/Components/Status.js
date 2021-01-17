@@ -18,7 +18,7 @@ const useStyles = makeStyles({
     }
 });
 
-function Status() {
+function Status(props) {
     const classes = useStyles();
 
     return (
