@@ -78,6 +78,7 @@ const useStyles = makeStyles({
 function Dashboard(props) {
     const classes = useStyles();
     const [open, setOpen] = useState(false);
+    const [selectedPlant, setSelectedPlant] = useState("");
     const [idealSoilMoisture, setIdealSoilMoisture] = useState(40)
     const [idealHumidity, setIdealHumidity] = useState(40);
     const [idealTemp, setIdealTemp] = useState(50);
@@ -87,10 +88,10 @@ function Dashboard(props) {
     const [phRange, setPhRange] = useState("N/A");
     const [nutriments, setNutriments] = useState("N/A");
 
-    var soilMoistureStr = (props.soilMoistureData.length > 0) ? props.soilMoistureData.slice(-1)[0].y : "?";
-    var humidityStr = (props.humidityData.length > 0) ? props.humidityData.slice(-1)[0].y : "?";
-    var tempStr = (props.tempData.length > 0) ? props.tempData.slice(-1)[0].y : "?";
-    var lightStr = (props.lightData.length > 0) ? props.lightData.slice(-1)[0].y : "?";
+    var soilMoistureStr = (props.soilMoistureData.length > 0) ? props.soilMoistureData.slice(-1)[0].y+"%" : "?";
+    var humidityStr = (props.humidityData.length > 0) ? props.humidityData.slice(-1)[0].y+"%" : "?";
+    var tempStr = (props.tempData.length > 0) ? props.tempData.slice(-1)[0].y+"°F" : "?";
+    var lightStr = (props.lightData.length > 0) ? props.lightData.slice(-1)[0].y+"lx" : "?";
 
     const handleClickOpen = () => {
         setOpen(true);
@@ -101,10 +102,9 @@ function Dashboard(props) {
     };
 
     async function handleChange(e) {
-        console.log(e.target.value);
         const plantResp = await props.searchPlant(e.target.value);
         const growthInfo = plantResp.data.data.growth;
-        console.log(growthInfo);
+        setSelectedPlant(e.target.value);
         if (growthInfo.soil_humidity) setIdealSoilMoisture(growthInfo.soil_humidity);
         if (growthInfo.atmospheric_humidity) setIdealHumidity(growthInfo.atmospheric_humidity * 10);
         if (growthInfo.minimum_temperature) setIdealTemp(growthInfo.minimum_temperature.deg_f);
@@ -116,7 +116,9 @@ function Dashboard(props) {
     }
 
     const handleClickPlant = () => {
-
+        if (selectedPlant === "") return;
+        props.createNewPlant(selectedPlant);
+        setOpen(false);
     };
 
     return (

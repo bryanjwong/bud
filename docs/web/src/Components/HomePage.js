@@ -45,16 +45,21 @@ function HomePage() {
 
     async function createNewPlant(name) {
         const plantResp = await searchPlant(name)
+        if (!plantResp) return;
         const plantInfo = plantResp.data.data;
         const growthInfo = plantInfo.growth;
         
-        if (plantInfo.common_name) setSpecies(plantInfo.common_name);
-        if (growthInfo.soil_humidity) setTSoilMoisture(growthInfo.soil_humidity);
-        if (growthInfo.atmospheric_humidity) setTHumidity(growthInfo.atmospheric_humidity * 10);
-        if (growthInfo.minimum_temperature) setTTemp(growthInfo.minimum_temperature.deg_f);
-        if (growthInfo.light) setTLight(growthInfo.light * 4);
+        const newSoilMoisture = (growthInfo.soil_humidity) ? (growthInfo.soil_humidity) : tSoilMoisture;
+        const newHumidity = (growthInfo.atmospheric_humidity) ? growthInfo.atmospheric_humidity * 10 : tHumidity;
+        const newTemp = (growthInfo.minimum_temperature) ? growthInfo.minimum_temperature.deg_f : tTemp;
+        const newLight = (growthInfo.light) ? growthInfo.light * 4 : tLight;
 
-        updateTargets(plantInfo.common_name, plantInfo.scientific_name, tSoilMoisture, tHumidity, tTemp, tLight);
+        setSpecies(plantInfo.common_name);
+        setTSoilMoisture(newSoilMoisture);
+        setTHumidity(newHumidity);
+        setTTemp(newTemp);
+        setTLight(newLight);
+        updateTargets(plantInfo.common_name, plantInfo.scientific_name, newSoilMoisture, newHumidity, newTemp, newLight);
     };
 
     function loadFirebaseData() {
@@ -107,7 +112,6 @@ function HomePage() {
     }
 
     function updateTargets(species, scientific_name, soilMoistureTarget, humidityTarget, tempTarget, lightTarget) {
-        console.log("Updating Targets in Firebase")
         const today = new Date();
         db.ref("active-plant/target").set({
             soil_moisture: soilMoistureTarget,
