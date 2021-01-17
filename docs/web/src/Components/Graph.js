@@ -37,19 +37,27 @@ function Graph(props) {
     const dims = {
         "Soil Moisture": {
             y_label: "Soil Moisture (%)",
-            data: props.soilMoistureData
+            data: props.soilMoistureData,
+            lowGradient: "rgb(96, 188, 177, 0.2)",
+            highGradient: "rgb(122, 206, 250, 1.0)"
         },
         "Humidity": {
             y_label: "Air Humidity (%)",
-            data: props.humidityData
+            data: props.humidityData,
+            lowGradient: "rgb(167, 191, 232, 0.2)",
+            highGradient: "rgb(97, 144, 232, 1.0)"
         },
         "Temperature": {
             y_label: "Temperature (°F)",
-            data: props.tempData
+            data: props.tempData,
+            lowGradient: "rgb(255, 195, 160, 0.2)",
+            highGradient: "rgb(255, 175, 189, 1.0)"
         },
         "Luminance": {
             y_label: "Luminance (lx)",
-            data: props.lightData
+            data: props.lightData,
+            lowGradient: "rgb(255, 210, 0, 0.2)",
+            highGradient: "rgb(247, 151, 30, 1.0)"
         }
     };
 
@@ -57,8 +65,8 @@ function Graph(props) {
         const myChartRef = chartRef.current.getContext("2d");
         const {height: graphHeight} = myChartRef.canvas;
         let gradientLine = myChartRef.createLinearGradient(0, 0, 0, graphHeight);
-        gradientLine.addColorStop(0, "rgb(96, 188, 177, 0.2)");
-        gradientLine.addColorStop(1, "#7ACEFA");
+        gradientLine.addColorStop(0, dims[displayedMetric].lowGradient);
+        gradientLine.addColorStop(1, dims[displayedMetric].highGradient);
 
         new Chart(myChartRef, {
             type: "line",
