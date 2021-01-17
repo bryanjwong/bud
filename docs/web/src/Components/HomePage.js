@@ -132,12 +132,31 @@ function HomePage() {
     return (
         <Grid container>
             <Grid item xs={12} lg={4}>
-                <ActivityLog />
+                <ActivityLog 
+                    tSoilMoisture={tSoilMoisture}
+                    tHumidity={tHumidity}
+                    tTemp={tTemp}
+                    tLight={tLight}
+                    soilMoistureData={soilMoistureData}
+                    humidityData={humidityData}
+                    tempData={tempData}
+                    lightData={lightData}
+                />
             </Grid>
             <Grid item xs={12} lg={8}>
-                <Dashboard species={species} tSoilMoisture={tSoilMoisture} tHumidity={tHumidity} tTemp={tTemp} tLight={tLight}
-                           soilMoistureData={soilMoistureData} humidityData={humidityData} tempData={tempData} lightData={lightData}
-                           searchPlant={searchPlant} createNewPlant={createNewPlant}/>
+                <Dashboard
+                    species={species}
+                    tSoilMoisture={tSoilMoisture}
+                    tHumidity={tHumidity}
+                    tTemp={tTemp}
+                    tLight={tLight}
+                    soilMoistureData={soilMoistureData}
+                    humidityData={humidityData}
+                    tempData={tempData}
+                    lightData={lightData}
+                    searchPlant={searchPlant} 
+                    createNewPlant={createNewPlant}
+                />
             </Grid>
         </Grid>
     )
