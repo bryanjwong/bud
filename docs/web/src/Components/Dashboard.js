@@ -69,6 +69,9 @@ const useStyles = makeStyles({
         textTransform: "none",
         borderRadius: 10,
         float: "right",
+        "&:hover": {
+            backgroundColor: "#17402e",
+        },
     }
 });
 
